@@ -120,6 +120,8 @@ Calls `codemagic_start_build` and returns the new build id:
 
 Calls `codemagic_get_build`. The `status` field moves through `queued → building → finishing → publishing → finished`:
 
+![Recent Codemagic build status rendered in Claude Code](docs/codemagic-mcp-build-status-example.webp)
+
 ```json
 {
   "build": {
