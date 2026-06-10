@@ -1,5 +1,12 @@
 # mcp-codemagic
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/musictechlab/mcp-codemagic/actions/workflows/ci.yml/badge.svg)](https://github.com/musictechlab/mcp-codemagic/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
+[![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://docs.astral.sh/ruff/)
+[![MCP](https://img.shields.io/badge/MCP-1.0+-purple.svg)](https://modelcontextprotocol.io/)
+[![Built by MusicTech Lab](https://musictechlab.io/oss/build-by-musictechlab.io.svg)](https://musictechlab.io)
+
 An [MCP](https://modelcontextprotocol.io) server for [Codemagic](https://codemagic.io) CI/CD. Trigger and inspect mobile/Flutter builds straight from Claude Code (or any MCP client) using the [Codemagic REST API](https://docs.codemagic.io/rest-api/overview/).
 
 > Built and maintained by [MusicTech Lab](https://musictechlab.io).
@@ -76,6 +83,61 @@ Or add it manually to your MCP config:
 - "Show the last builds for app `<app-id>` that are still building."
 - "Cancel build `<build-id>`."
 
+## Examples
+
+### List apps
+
+> "List my Codemagic apps and their workflows."
+
+Calls `codemagic_list_apps` and returns each application with its id and workflow ids:
+
+```json
+{
+  "applications": [
+    {
+      "_id": "6a28af80c12e620808693f7b",
+      "appName": "vimoswim-coach",
+      "repository": { "htmlUrl": "https://github.com/vimoswim/vimoswim-coach" },
+      "workflowIds": ["6a28af80c12e620808693f7a"]
+    }
+  ]
+}
+```
+
+### Trigger a build
+
+> "Start workflow `6a28af80c12e620808693f7a` for app `6a28af80c12e620808693f7b` on `main`."
+
+Calls `codemagic_start_build` and returns the new build id:
+
+```json
+{ "buildId": "6a28f92cf7acee31a7394057" }
+```
+
+### Check build status
+
+> "What's the status of build `6a28f92cf7acee31a7394057`?"
+
+Calls `codemagic_get_build`. The `status` field moves through `queued → building → finishing → publishing → finished`:
+
+```json
+{
+  "build": {
+    "_id": "6a28f92cf7acee31a7394057",
+    "status": "queued",
+    "branch": "main",
+    "workflowId": "6a28af80c12e620808693f7a",
+    "instanceType": "mac_mini_m2"
+  }
+}
+```
+
+Errors come back as JSON (never raised), so the agent can read them:
+
+```json
+{ "error": "Codemagic API 404 for GET /builds/missing", "status": 404, "body": { "message": "Build not found" } }
+```
+
 ## Configuration
 
 | Variable | Required | Default | Description |
@@ -92,6 +154,26 @@ poetry run ruff format --check .
 poetry run pytest
 ```
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Security
+
+To report a vulnerability, see [SECURITY.md](SECURITY.md).
+
 ## License
 
-[MIT](LICENSE) © MusicTech Lab
+MIT — see [LICENSE](LICENSE).
+
+---
+
+<div align="center">
+  MusicTech Lab - Rockstars Developers dedicated to the Music Industry<br>
+  <a href="https://musictechlab.io">Website</a>
+  <span> | </span>
+  <a href="https://linkedin.com/company/musictechlab">LinkedIn</a>
+  <span> | </span>
+  <a href="https://musictechlab.io/contact">Let's talk</a><br>
+  Crafted by <a href="https://musictechlab.io">musictechlab.io</a>
+</div>
