@@ -18,7 +18,7 @@ mcp = FastMCP(
     instructions=(
         "Codemagic CI/CD integration. List applications and their workflows, "
         "trigger builds on a branch or tag, check build status, list recent "
-        "builds, and cancel running builds. Requires the CODEMAGIC_API_KEY "
+        "builds, read the log of a build step, and cancel running builds. Requires the CODEMAGIC_API_KEY "
         "environment variable (Codemagic → Integrations → Codemagic API)."
     ),
 )
@@ -145,3 +145,20 @@ def codemagic_cancel_build(build_id: str) -> str:
         build_id: The id of the build to cancel.
     """
     return _ok(codemagic.cancel_build(build_id))
+
+
+@mcp.tool()
+@_safe
+def codemagic_get_build_log(build_id: str, step: str | None = None, tail: int = 200) -> str:
+    """Read the log of one build step, to see why a build failed.
+
+    Without a step name it picks the first failed step, so the usual call is
+    just the build id. Returns the step's name and status and the last lines
+    of its log.
+
+    Args:
+        build_id: The build id (from codemagic_start_build or codemagic_list_builds).
+        step: Part of a step name, e.g. "build ipa" or "code signing".
+        tail: How many lines from the end of the log to return (default 200).
+    """
+    return _ok(codemagic.get_build_log(build_id, step=step, tail=tail))

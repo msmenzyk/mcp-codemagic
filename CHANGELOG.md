@@ -6,6 +6,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- `codemagic_get_build_log`: reads the log of one build step (the first failed
+  step unless a step name is given) and returns its last lines, so a failed
+  build can be explained without opening the Codemagic UI. The API token is
+  only sent to the configured Codemagic host.
+
 ## [0.1.0] - 2026-06-10
 
 ### Added

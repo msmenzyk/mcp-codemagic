@@ -21,6 +21,7 @@ An [MCP](https://modelcontextprotocol.io) server for [Codemagic](https://codemag
 | `codemagic_get_build` | Get the status and details of a build |
 | `codemagic_list_builds` | List builds, filterable by app/workflow/branch/status |
 | `codemagic_cancel_build` | Cancel a running or queued build |
+| `codemagic_get_build_log` | Last lines of a build step's log, the first failed step by default |
 
 ## Requirements
 
